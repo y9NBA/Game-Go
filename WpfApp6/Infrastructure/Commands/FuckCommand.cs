@@ -27,9 +27,10 @@ namespace WpfApp6.Infrastructure.Commands
             MainWindowViewModel mwvm = parameters[1] as MainWindowViewModel;
             if (mwvm.Game.Step % 2 == 0 && field.State == "")
                 field.State = mwvm.Game.Move = "B";
+                mwvm.Game.Step++;
             else if (Convert.ToDecimal(mwvm.Game.Step) % 2 != 0 && field.State == "")
                 field.State = mwvm.Game.Move = "W";
-            mwvm.Game.Step++;
+                mwvm.Game.Step++;
             
         }
     }
