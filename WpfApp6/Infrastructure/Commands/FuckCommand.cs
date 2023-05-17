@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using WpfApp6.Infrastructure.Commands.Base;
 using WpfApp6.Models;
 using WpfApp6.ViewModels;
@@ -24,8 +25,12 @@ namespace WpfApp6.Infrastructure.Commands
             object[] parameters = parameter as object[];
             Field field = parameters[0]  as Field;
             MainWindowViewModel mwvm = parameters[1] as MainWindowViewModel;
-            field.State = mwvm.Game.Move;
-            mwvm.Game.Move = mwvm.Game.Move == "B" ? "W" : "B";
+            if (mwvm.Game.Step % 2 == 0 && field.State == "")
+                field.State = mwvm.Game.Move = "B";
+            else if (Convert.ToDecimal(mwvm.Game.Step) % 2 != 0 && field.State == "")
+                field.State = mwvm.Game.Move = "W";
+            mwvm.Game.Step++;
+            
         }
     }
 }

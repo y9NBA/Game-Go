@@ -9,11 +9,17 @@ namespace WpfApp6.Models
 {
     class Game : ViewModel
     {
-        private string move = "B";
+        private string move = "";
+        private int step = 0;
         public string Move
         {
             get => move;
             set => Set(ref move, value);
+        }
+        public int Step 
+        { 
+            get => step; 
+            set => Set(ref step, value); 
         }
     }
 }
