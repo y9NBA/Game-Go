@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace WpfApp6.Models
     class Game : ViewModel
     {
         private string move = "";
-        private int step = 0;
+        private int step = 0; 
         public string Move
         {
             get => move;

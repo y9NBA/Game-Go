@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,15 +24,19 @@ namespace WpfApp6.Infrastructure.Commands
         public override void Execute(object parameter)
         {
             object[] parameters = parameter as object[];
-            Field field = parameters[0]  as Field;
+            Field field = parameters[0] as Field;
             MainWindowViewModel mwvm = parameters[1] as MainWindowViewModel;
+
             if (mwvm.Game.Step % 2 == 0 && field.State == "")
+            {
                 field.State = mwvm.Game.Move = "B";
                 mwvm.Game.Step++;
+            }
             else if (Convert.ToDecimal(mwvm.Game.Step) % 2 != 0 && field.State == "")
+            {
                 field.State = mwvm.Game.Move = "W";
                 mwvm.Game.Step++;
-            
+            }
         }
     }
 }

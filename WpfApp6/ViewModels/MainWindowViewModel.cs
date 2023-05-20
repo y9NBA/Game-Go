@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
+using System.Drawing;
 using WpfApp6.Infrastructure.Commands;
 using WpfApp6.ViewModels.Base;
 using WpfApp6.Infrastructure.Commands.Base;
@@ -27,7 +28,8 @@ namespace WpfApp6.ViewModels
         public MainWindowViewModel()
         {
             game = new Game();
-            Size = "3";
+            Size = "5";
+            Color = Color.FromName("Black");
         }
 
 
@@ -47,7 +49,18 @@ namespace WpfApp6.ViewModels
             set => Set(ref field, value);            
         }
 
-        int size = 3;
+        string color;
+        public Color Color
+        {
+            get => Color.FromName(color);
+            set
+            {
+                if (color == "Black") Set(ref color, "White");
+                else Set(ref color, "Black");
+            }
+        }
+
+        int size = 30;
         public string Size
         {
             get => size.ToString();

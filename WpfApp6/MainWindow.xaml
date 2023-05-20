@@ -39,13 +39,22 @@
             </ItemsControl>
         </DataTemplate>
     </Window.Resources>
-    
+
     <Grid>
         <DockPanel>
             <TextBox 
-                DockPanel.Dock="Top" 
+                DockPanel.Dock="Bottom" 
+                TextAlignment="Center"
                 Text="{Binding Size}"/>
-            <ItemsControl ItemsSource="{Binding F}" ItemTemplate="{DynamicResource DataTemplate_Level1}"/>
+            <TextBox
+                Name="ColorBar"
+                DockPanel.Dock="Top"
+                Background="{Binding Color}"
+                />
+            <ItemsControl 
+                ItemsSource="{Binding F}" 
+                ItemTemplate="{DynamicResource DataTemplate_Level1}"
+                />
         </DockPanel>
     </Grid>
 </Window>
