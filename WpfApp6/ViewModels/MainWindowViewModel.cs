@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
-using System.Drawing;
 using WpfApp6.Infrastructure.Commands;
 using WpfApp6.ViewModels.Base;
 using WpfApp6.Infrastructure.Commands.Base;
@@ -28,11 +27,9 @@ namespace WpfApp6.ViewModels
         public MainWindowViewModel()
         {
             game = new Game();
-            Size = "5";
-            Color = Color.FromName("Black");
+            Size = "10";
+            while (game.Color != null) Color = game.Color;
         }
-
-
 
         ObservableCollection<ObservableCollection<Field>> f = new();
         public ObservableCollection<ObservableCollection<Field>> F
@@ -40,7 +37,6 @@ namespace WpfApp6.ViewModels
             get => f;
             set => Set(ref f, value);
         }
-
 
         DataTable field;
         public DataTable Field
@@ -50,17 +46,13 @@ namespace WpfApp6.ViewModels
         }
 
         string color;
-        public Color Color
-        {
-            get => Color.FromName(color);
-            set
-            {
-                if (color == "Black") Set(ref color, "White");
-                else Set(ref color, "Black");
-            }
+        public string Color
+        { 
+            get => color;
+            set => Set(ref color, value);
         }
 
-        int size = 30;
+        int size;
         public string Size
         {
             get => size.ToString();

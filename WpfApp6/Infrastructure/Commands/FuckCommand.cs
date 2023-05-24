@@ -15,12 +15,8 @@ namespace WpfApp6.Infrastructure.Commands
     {
         public override bool CanExecute(object parameter)
         {
-            //object[] parameters = parameter as object[];
-            //Field field = parameters[0] as Field;
-            //return field.State == "";
             return true;
         }
-
         public override void Execute(object parameter)
         {
             object[] parameters = parameter as object[];
@@ -29,12 +25,12 @@ namespace WpfApp6.Infrastructure.Commands
 
             if (mwvm.Game.Step % 2 == 0 && field.State == "")
             {
-                field.State = mwvm.Game.Move = "B";
+                mwvm.Game.Color = field.State = mwvm.Game.Move = "Black";
                 mwvm.Game.Step++;
             }
-            else if (Convert.ToDecimal(mwvm.Game.Step) % 2 != 0 && field.State == "")
+            else if (mwvm.Game.Step % 2 != 0 && field.State == "")
             {
-                field.State = mwvm.Game.Move = "W";
+                mwvm.Game.Color = field.State = mwvm.Game.Move = "White";
                 mwvm.Game.Step++;
             }
         }

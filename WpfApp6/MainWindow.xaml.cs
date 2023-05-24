@@ -30,5 +30,13 @@ namespace WpfApp6
 
         }
 
+        //public void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    switch (Text_Step.Text)
+        //    {
+        //        case "Black": Text_Step.Text = "White"; break;
+        //        case "White": Text_Step.Text = "Black"; break;
+        //    }
+        //}
     }
 }

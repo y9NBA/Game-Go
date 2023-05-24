@@ -11,7 +11,8 @@ namespace WpfApp6.Models
     class Game : ViewModel
     {
         private string move = "";
-        private int step = 0; 
+        private int step = 0;
+        private string color = "Black";
         public string Move
         {
             get => move;
@@ -21,6 +22,11 @@ namespace WpfApp6.Models
         { 
             get => step; 
             set => Set(ref step, value); 
+        }
+        public string Color
+        {
+            get => color;
+            set => Set(ref color, value);
         }
     }
 }
