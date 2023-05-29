@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace WpfApp6.Converters
 {
-    abstract class Converter : IValueConverter
+    public abstract class Converter : IValueConverter
     {
         public abstract object Convert(object v, Type t, object p, CultureInfo c);
 

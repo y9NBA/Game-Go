@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Go.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp6
+namespace Go
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,20 +24,11 @@ namespace WpfApp6
         public MainWindow()
         {
             InitializeComponent();
-        }
+        }   
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
-
-        //public void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    switch (Text_Step.Text)
-        //    {
-        //        case "Black": Text_Step.Text = "White"; break;
-        //        case "White": Text_Step.Text = "Black"; break;
-        //    }
-        //}
     }
 }

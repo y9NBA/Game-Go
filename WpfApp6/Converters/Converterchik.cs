@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace WpfApp6.Converters
+namespace Go.Converters
 {
-    internal class FuckConverter : IMultiValueConverter
+    public class Converterchik : IMultiValueConverter
     {
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

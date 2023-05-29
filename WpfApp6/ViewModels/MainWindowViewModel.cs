@@ -7,85 +7,136 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
-using WpfApp6.Infrastructure.Commands;
-using WpfApp6.ViewModels.Base;
-using WpfApp6.Infrastructure.Commands.Base;
+using Go.Infrastructure.Commands;
+using Go.ViewModels.Base;
+using Go.Infrastructure.Commands.Base;
 using System.Reflection.Metadata;
-using WpfApp6.Models;
+using Go.Models;
+using System.Security.Cryptography;
+using System.Windows.Controls;
 
-namespace WpfApp6.ViewModels
+namespace Go.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        private Game game;
-        public Game Game 
-        {
-            get => game;
-            set => Set(ref game, value);
-        }
-
         public MainWindowViewModel()
         {
-            game = new Game();
-            Size = "10";
-            while (game.Color != null) Color = game.Color;
+            //board = new Board();
+            currentPlayer = new Player() { Color = 2 };
         }
 
-        ObservableCollection<ObservableCollection<Field>> f = new();
-        public ObservableCollection<ObservableCollection<Field>> F
-        {
-            get => f;
-            set => Set(ref f, value);
-        }
-
-        DataTable field;
-        public DataTable Field
-        {
-            get => field;
-            set => Set(ref field, value);            
-        }
-
-        string color;
-        public string Color
+        
+        public RellayCommand SaveCommand 
         { 
-            get => color;
-            set => Set(ref color, value);
+            get => new(SaveCommandRelBack); 
+        }
+        private void SaveCommandRelBack()
+        {
+        
         }
 
-        int size;
-        public string Size
+        private Board board = new();
+        public string Board
         {
-            get => size.ToString();
-            set 
+            get
             {
-                if (int.TryParse(value, out int newSize))
+                for (int i = 0; i < board.Field.GetLength(0); i++)
                 {
-                    Set(ref size, newSize);
-
-                    DataTable newField = new();
-                    for (int i = 0; i < newSize; i++)
-                        newField.Columns.Add();
-                    
-                    for (int i = 0; i < newSize; i++)
+                    for (int j = 0; j < board.Field.GetLength(1); j++)
                     {
-                        object[] row = new object[newSize];
-                        for (int j = 0; j < size; j++)
-                            row[j] = i * 10 + j;
-                        newField.Rows.Add(row);
-                    }
-                    Field = newField;
-
-
-                    f.Clear();                    
-                    for (int i = 0; i < newSize; i++)
-                    {
-                        ObservableCollection<Field> fRow = new();
-                        for (int j = 0; j < size; j++)
-                            fRow.Add(new Field() {I = i, J = j });
-                        f.Add(fRow);
+                        return board.Field[i, j].CurrentState.ToString();
                     }
                 }
             }
         }
+        private Player currentPlayer;
+        public Player CurrentPlayer
+        {
+            get => currentPlayer;
+        }
+
+        public void MakeMove(int x, int y)
+        {
+            board.MakeMove(currentPlayer, x, y);
+            currentPlayer = currentPlayer.Color == 0 ? new Player { Color = 2 } : new Player { Color = 1 };
+
+            OnPropertyChanged(nameof(Board));
+            OnPropertyChanged(nameof(CurrentPlayer));
+        }
+        
+        //public IEnumerable<int> BoardField
+        //{
+        //    get
+        //    {
+        //        for(int i = 0; i < 5; i++)
+        //        {
+        //            for(int j = 0; j < 5; j++)
+        //            {
+        //                yield return board.Field[i,j].CurrentState;
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void Click_On_Board(object sender, EventArgs e)
+        //{
+        //    var button = sender as Button;
+        //    var state = button.Tag as State;
+        //    int x = state.I;
+        //    int y = state.J;
+        //    MakeMove(x, y);
+        //}
+
+        //private Game game;
+        //public Game Game
+        //{
+        //    get => game;
+        //    set => Set(ref game, value);
+        //}
+
+        //private Player player1 = new() { Color = 0 };
+        //public Player Player1
+        //{
+        //    get => player1;
+        //    set => Set(ref player1, value);
+        //}
+
+        //private Player player2 = new() { Color = 1 };
+        //public Player Player2
+        //{
+        //    get => player2;
+        //    set => Set(ref player2, value);
+        //}
+
+        //private string[,] field;
+        //public string[,] Field
+        //{
+        //    get => field;
+        //    set => Set( ref field, value);
+        //}
+
+        //private int size= 30;
+        //public string Size
+        //{
+        //    get => size.ToString();
+        //    set
+        //    {
+        //        if (int.TryParse(value, out int sizefield))
+        //        {
+        //            Set(ref size, sizefield);
+
+        //            string[,] newfields = new string[sizefield, sizefield];
+        //            for (int i = 0; i < sizefield; i++)
+        //            {
+        //                for (int j = 0; j < sizefield; j++)
+        //                {
+        //                    newfields[i, j] = "";
+        //                }
+        //            }
+        //            Field = newfields;
+        //        }
+        //    }
+        //}
+
     }
 }

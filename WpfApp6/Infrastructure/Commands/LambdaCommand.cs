@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WpfApp6.Infrastructure.Commands.Base;
+using Go.Infrastructure.Commands.Base;
 
-namespace WpfApp6.Infrastructure.Commands
+namespace Go.Infrastructure.Commands
 {
     internal class LambdaCommand : Command
     {
@@ -17,9 +17,7 @@ namespace WpfApp6.Infrastructure.Commands
             _Execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
             _CanExecute = CanExecute;
         }
-
         public override bool CanExecute(object parameter) => _CanExecute?.Invoke(parameter) ?? true;
-
         public override void Execute(object parameter)
         {
             if (!CanExecute(parameter)) return;
