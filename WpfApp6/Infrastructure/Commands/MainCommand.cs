@@ -25,15 +25,11 @@ namespace Go.Infrastructure.Commands
             object[] parameters = parameter as object[];
             Board board = parameters[0] as Board;
             MainWindowViewModel mwvm = parameters[1] as MainWindowViewModel;
-            EventArgs e = parameters[2] as EventArgs;
-            object sender = parameters[3] as object;
-            Button button = sender as Button;
-            State state = button.Tag as State;
 
 
-            int x = state.I;
-            int y = state.J;
-            mwvm.MakeMove(x, y);
+            //int x = 
+            //int y = 
+            //mwvm.MakeMove(x, y);
 
                 //if (mwvm.Game.Step % 2 == 0 && mwvm.Field)
                 //{

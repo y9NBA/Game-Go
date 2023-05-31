@@ -21,8 +21,7 @@
         <c:ArrayToObservableCollectionConverter x:Key="ATOC"/>
         <vm:MainWindowViewModel x:Key="MWVM"/>
         <DataTemplate x:Key="DataTemplate_Level2">
-            <Button Content="{Binding}"
-                    Command="{StaticResource MainCommand}"
+            <Button Command="{StaticResource MainCommand}"
                     BorderThickness="0"
                     Background="Orange"
                     Height="20" 

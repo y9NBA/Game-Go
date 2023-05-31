@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Remove="Converters\Converter.cs" />
+    <Compile Remove="Models\State.cs" />
   </ItemGroup>
 
 </Project>

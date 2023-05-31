@@ -14,17 +14,17 @@ namespace Go.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not State[,] array)
+            if (value is not int[,] array)
                 return null;
 
-            ObservableCollection <ObservableCollection<State>> collection = new();
+            ObservableCollection <ObservableCollection<string>> collection = new();
 
             for (int i = 0; i < array.GetLength(0); i++)
             {
-                ObservableCollection<State> collection2 = new();
+                ObservableCollection<string> collection2 = new();
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    collection2.Add(array[i, j]);
+                    collection2.Add(array[i, j].ToString());
                 }
                 collection.Add(collection2);
             }
