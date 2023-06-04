@@ -23,10 +23,10 @@ namespace Go.Infrastructure.Commands
         public override void Execute(object parameter)
         {
             object[] parameters = parameter as object[];
-            Board board = parameters[0] as Board;
+            State field = parameters[0] as State;
             MainWindowViewModel mwvm = parameters[1] as MainWindowViewModel;
 
-
+            mwvm.MakeMove(field);
             //int x = 
             //int y = 
             //mwvm.MakeMove(x, y);

@@ -9,11 +9,11 @@ namespace Go.Models
 {
     public class State : ViewModel
     {
-        private int currentState = 0;
-        public int CurrentState
+        private int color = 0;
+        public int Color
         {
-            get => currentState;
-            set => Set(ref currentState, value);
+            get => color;
+            set => Set(ref color, value);
         }
         public int I { get; set; }
         public int J { get; set; }

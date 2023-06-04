@@ -60,7 +60,7 @@
                 DockPanel.Dock="Bottom" 
                 Text="{Binding Size}"
                 TextAlignment="Center"/>-->
-            <ItemsControl ItemsSource="{Binding BoardField, Converter={StaticResource ATOC}}" 
+            <ItemsControl ItemsSource="{Binding Board, Converter={StaticResource ATOC}}" 
                           ItemTemplate="{DynamicResource DataTemplate_Level1}"/>
         </DockPanel>
     </Grid>
