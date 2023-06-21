@@ -22,6 +22,7 @@
         <vm:MainWindowViewModel x:Key="MWVM"/>
         <DataTemplate x:Key="DataTemplate_Level2">
             <Button Command="{StaticResource MainCommand}"
+                    Content="{Binding State}"
                     BorderThickness="0"
                     Background="Orange"
                     Height="20" 

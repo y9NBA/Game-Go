@@ -7,13 +7,13 @@ using Go.ViewModels.Base;
 
 namespace Go.Models
 {
-    public class State : ViewModel
+    public class Field : ViewModel
     {
-        private int color = 0;
-        public int Color
+        private string state = "";
+        public string State
         {
-            get => color;
-            set => Set(ref color, value);
+            get => state.ToString();
+            set => Set(ref state, value);
         }
         public int I { get; set; }
         public int J { get; set; }

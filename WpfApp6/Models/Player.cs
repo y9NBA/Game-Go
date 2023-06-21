@@ -9,10 +9,10 @@ namespace Go.Models
 {
     public class Player : ViewModel
     {
-        private int color;
+        private string color;
         private int score = 0;
 
-        public int Color
+        public string Color
         {
             get => color;
             set => Set(ref color, value);

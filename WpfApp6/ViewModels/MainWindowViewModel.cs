@@ -23,7 +23,7 @@ namespace Go.ViewModels
         public MainWindowViewModel()
         {
             CreateField();
-            currentPlayer = new Player() { Color = 2 };
+            currentPlayer = new Player() { Color = "Black" };
             //Size = "5";
         }
 
@@ -37,18 +37,18 @@ namespace Go.ViewModels
         //}
         public void CreateField()
         {
-            State[,] field = new State[5, 5];
+            Field[,] field = new Field[5, 5];
             for (int i = 0; i < field.GetLength(0); i++)
             {
                 for (int j = 0; j < field.GetLength(1); j++)
                 {
-                    field[i, j] = new State { I = i, J = j, Color = 0 };
+                    field[i, j] = new Field { I = i, J = j, State = "" };
                 }
             }
             board = field;
         }
-        public State[,] board;
-        public State[,] Board
+        public Field[,] board;
+        public Field[,] Board
         {
             get => board;
             set => Set(ref board, value);
@@ -62,12 +62,12 @@ namespace Go.ViewModels
         //        if (int.TryParse(value, out int newSize))
         //        {
         //            Set(ref size, newSize);
-        //            State[,] field = new State[newSize, newSize];
+        //            Field[,] field = new Field[newSize, newSize];
         //            for (int i = 0; i < field.GetLength(0); i++)
         //            {
         //                for (int j = 0; j < field.GetLength(1); j++)
         //                {
-        //                    field[i, j] = new State { I = i, J = j, Color = 0 };
+        //                    field[i, j] = new Field { I = i, J = j, Color = 0 };
         //                }
         //            }
         //            Array.Clear(board);
@@ -80,57 +80,53 @@ namespace Go.ViewModels
         public Player CurrentPlayer
         {
             get => currentPlayer;
+            set => Set(ref currentPlayer, value);
         }
 
-        public void MakeMove(State field)
+        public void CheckBoard(Field field)
         {
             if (currentPlayer == null)
             {
-                MakeMove(currentPlayer, field.I, field.J);
-                currentPlayer = currentPlayer.Color == 1 ? new Player { Color = 2 } : new Player { Color = 0 };
+                Move(currentPlayer, field.I, field.J, field);
 
-                OnPropertyChanged(nameof(field));
+                OnPropertyChanged(nameof(Board));
                 OnPropertyChanged(nameof(CurrentPlayer));
             }
         }
-        public void MakeMove(Player player, int x, int y)
+        public void Move(Player player, int x, int y, Field field)
         {
-            if (!IsValidMove(x, y, player.Color))
-            {
-                return;
-            }
-            InputState(x, y, player.Color);
+            //InputState(field, player.Color);
             if (IsCapture(x, y, player.Color))
             {
                 Capture(x, y, player.Color);
             }
         }
 
-        private bool IsValidMove(int x, int y, int color)
+        public bool IsValidMove(Field field, string color)
         {
-            if (board[x, y].Color != 1) return false;
+            //if (field.State != "") return false;
             bool captured = false;
-            foreach (Point n in GetNeighbors(x, y))
+            foreach (Point n in GetNeighbors(field))
             {
-                if (board[n.X, n.Y].Color == OppositeColor(color) && IsCapture(n.X, n.Y, color))
+                if (board[n.X, n.Y].State == OppositeColor(color) && IsCapture(n.X, n.Y, color))
                 {
                     captured = true; break;
                 }
             }
             if (!captured)
             {
-                InputState(x, y, color);
+                InputState(field, color);
                 bool connected = false;
-                foreach (Point n in GetNeighbors(x, y))
+                foreach (Point n in GetNeighbors(field))
                 {
-                    if (GetState(x, y) == color && IsConnected(n.X, n.Y))
+                    if (GetState(field) == color && IsConnected(n.X, n.Y))
                     {
                         connected = true; break;
                     }
                 }
                 if (!connected)
                 {
-                    InputState(x, y, 0);
+                    InputState(field, "");
                     return false;
                 }
             }
@@ -139,10 +135,10 @@ namespace Go.ViewModels
 
         private bool IsConnected(int x, int y)
         {
-            if (GetState(x, y) == 0) return false;
+            if (GetState(x, y) == "") return false;
             else
             {
-                int groupNumber = GetState(x, y);
+                string groupNumber = GetState(x, y);
                 foreach (Point n in GetNeighbors(x, y))
                 {
                     if (GetState(n.X, n.Y) == groupNumber) return true;
@@ -151,34 +147,47 @@ namespace Go.ViewModels
             return false;
         }
 
-        private int OppositeColor(int color)
+        private string OppositeColor(string color)
         {
-            if (color == 1) return 2;
-            else if (color == 2) return 1;
-            else return 0;
+            if (color == "White") return "Black";
+            else if (color == "Black") return "White";
+            else return "";
         }
 
         private List<Point> GetNeighbors(int x, int y)
         {
             List<Point> neihbors = new List<Point>();
-            if (x > 0 && GetState(x - 1, y) == 0)
+            if (x > 0 && GetState(x - 1, y) == "")
                 neihbors.Add(new Point(x - 1, y));
-            if (x < Board.GetLength(0) - 1 && GetState(x + 1, y) == 0)
+            if (x < Board.GetLength(0) - 1 && GetState(x + 1, y) == "")
                 neihbors.Add(new Point(x + 1, y));
-            if (y > 0 && GetState(x, y - 1) == 0)
+            if (y > 0 && GetState(x, y - 1) == "")
                 neihbors.Add(new Point(x, y - 1));
-            if (y < Board.GetLength(1) - 1 && GetState(x, y) == 0)
+            if (y < Board.GetLength(1) - 1 && GetState(x, y) == "")
                 neihbors.Add(new Point(x, y + 1));
+            return neihbors;
+        }
+        private List<Point> GetNeighbors(Field field)
+        {
+            List<Point> neihbors = new List<Point>();
+            if (field.I > 0 && GetState(field.I - 1, field.J) == "")
+                neihbors.Add(new Point(field.I - 1, field.J));
+            if (field.I < Board.GetLength(0) - 1 && GetState(field.I + 1, field.J) == "")
+                neihbors.Add(new Point(field.I + 1, field.J));
+            if (field.J > 0 && GetState(field.I, field.J - 1) == "")
+                neihbors.Add(new Point(field.I, field.J - 1));
+            if (field.J < Board.GetLength(1) - 1 && GetState(field) == "")
+                neihbors.Add(new Point(field.I, field.J + 1));
             return neihbors;
         }
         public bool HasLiberties(int x, int y)
         {
-            int color = GetState(x, y);
+            string color = GetState(x, y);
 
-            if ((x > 0 && GetState(x - 1, y) == 0) ||
-                (x < Board.GetLength(0) - 1 && GetState(x + 1, y) == 0) ||
-                (y > 0 && GetState(x, y - 1) == 0) ||
-                (y < Board.GetLength(1) - 1 && GetState(x, y + 1) == 0))
+            if ((x > 0 && GetState(x - 1, y) == "") ||
+                (x < Board.GetLength(0) - 1 && GetState(x + 1, y) == "") ||
+                (y > 0 && GetState(x, y - 1) == "") ||
+                (y < Board.GetLength(1) - 1 && GetState(x, y + 1) == ""))
             {
                 return true;
             }
@@ -195,51 +204,59 @@ namespace Go.ViewModels
         }
 
 
-        private bool IsCapture(int x, int y, int color)
+        private bool IsCapture(int x, int y, string color)
         {
-            if (x > 0 && GetState(x - 1, y) == -color && !HasLiberties(x - 1, y))
+            if (x > 0 && GetState(x - 1, y) == color && !HasLiberties(x - 1, y))
             {
-                InputState(x - 1, y, 0);
+                InputState(x - 1, y, "");
                 return true;
             }
-            if (x < Board.GetLength(0) - 1 && GetState(x + 1, y) == -color && !HasLiberties(x + 1, y))
+            if (x < Board.GetLength(0) - 1 && GetState(x + 1, y) == color && !HasLiberties(x + 1, y))
             {
-                InputState(x + 1, y, 0);
+                InputState(x + 1, y, "");
                 return true;
             }
-            if (y > 0 && GetState(x, y - 1) == -color && !HasLiberties(x, y - 1))
+            if (y > 0 && GetState(x, y - 1) == color && !HasLiberties(x, y - 1))
             {
-                InputState(x, y - 1, 0);
+                InputState(x, y - 1, "");
                 return true;
             }
-            if (y < Board.GetLength(1) - 1 && GetState(x, y + 1) == -color && !HasLiberties(x, y + 1))
+            if (y < Board.GetLength(1) - 1 && GetState(x, y + 1) == color && !HasLiberties(x, y + 1))
             {
-                InputState(x, y + 1, 0);
+                InputState(x, y + 1, "");
                 return true;
             }
 
             return false;
         }
 
-        private void Capture(int x, int y, int color)
+        private void Capture(int x, int y, string color)
         {
             {
                 if (IsCapture(x, y, color))
                 {
-                    if (x > 0 && GetState(x - 1, y) == 0) HasLiberties(x - 1, y);
-                    if (x < Board.GetLength(0) - 1 && GetState(x + 1, y) == 0) HasLiberties(x + 1, y);
-                    if (y > 0 && GetState(x, y - 1) == 0) HasLiberties(x, y - 1);
-                    if (y < Board.GetLength(1) - 1 && GetState(x, y + 1) == 0) HasLiberties(x, y + 1);
+                    if (x > 0 && GetState(x - 1, y) == "") HasLiberties(x - 1, y);
+                    if (x < Board.GetLength(0) - 1 && GetState(x + 1, y) == "") HasLiberties(x + 1, y);
+                    if (y > 0 && GetState(x, y - 1) == "") HasLiberties(x, y - 1);
+                    if (y < Board.GetLength(1) - 1 && GetState(x, y + 1) == "") HasLiberties(x, y + 1);
                 }
             }
         }
-        public int GetState(int x, int y)
+        public string GetState(int x, int y)
         {
-            return board[x, y].Color;
+            return board[x, y].State;
         }
-        public void InputState(int x, int y, int color)
+        public string GetState(Field field)
         {
-            board[x, y].Color = color;
+            return field.State;
+        }
+        public void InputState(int x, int y, string color)
+        {
+            board[x,y].State = color;
+        }
+        public void InputState(Field field, string color)
+        {
+            field.State = color;
         }
 
         //public IEnumerable<int> BoardField
@@ -259,7 +276,7 @@ namespace Go.ViewModels
         //private void Click_On_Board(object sender, EventArgs e)
         //{
         //    var button = sender as Button;
-        //    var state = button.Tag as State;
+        //    var state = button.Tag as Field;
         //    int x = state.I;
         //    int y = state.J;
         //    MakeMove(x, y);
